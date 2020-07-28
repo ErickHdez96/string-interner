@@ -22,14 +22,17 @@ use std::mem;
 pub struct Symbol(u32);
 
 impl Symbol {
+    /// Get the internal `u32` representation.
     pub fn as_u32(self) -> u32 {
         self.0
     }
 
+    /// Intern a [`String`] and receive a Symbol that points to it.
     pub fn intern<S: AsRef<str>>(s: S) -> Self {
         with_interner(move |interner| interner.intern(s))
     }
 
+    /// Get the string representation that this token points to.
     pub fn as_str(self) -> &'static str {
         with_interner(|interner| interner.symbol_to_str(self))
     }
