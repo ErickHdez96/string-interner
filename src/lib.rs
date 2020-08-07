@@ -16,6 +16,7 @@ mod arena;
 use arena::Arena;
 use std::cell::RefCell;
 use std::collections::HashMap;
+use std::fmt;
 use std::mem;
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
@@ -35,6 +36,12 @@ impl Symbol {
     /// Get the string representation that this token points to.
     pub fn as_str(self) -> &'static str {
         with_interner(|interner| interner.symbol_to_str(self))
+    }
+}
+
+impl fmt::Display for Symbol {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.as_str())
     }
 }
 
