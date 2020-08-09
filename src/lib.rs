@@ -19,7 +19,7 @@ use std::collections::HashMap;
 use std::fmt;
 use std::mem;
 
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Copy, Clone, PartialEq, Eq, Hash)]
 pub struct Symbol(u32);
 
 impl Symbol {
@@ -42,6 +42,12 @@ impl Symbol {
 impl fmt::Display for Symbol {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.as_str())
+    }
+}
+
+impl fmt::Debug for Symbol {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_tuple("Symbol").field(&self.as_str()).finish()
     }
 }
 
@@ -117,7 +123,7 @@ mod tests {
         let input1 = " ".repeat(4096);
         let s1 = Symbol::intern(&input1);
         assert_eq!(s1.as_str(), &input1);
-        let input2 = "+".repeat(1);
+        let input2 = "+".to_string();
         let s2 = Symbol::intern(&input2);
         assert_eq!(s2.as_str(), &input2);
         let input3 = "-".repeat(4097);
