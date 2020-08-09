@@ -45,6 +45,18 @@ impl fmt::Display for Symbol {
     }
 }
 
+impl From<String> for Symbol {
+    fn from(s: String) -> Self {
+        Symbol::intern(s)
+    }
+}
+
+impl From<&str> for Symbol {
+    fn from(s: &str) -> Self {
+        Symbol::intern(s)
+    }
+}
+
 #[derive(Debug)]
 struct Interner {
     map: HashMap<&'static str, u32>,
@@ -134,9 +146,9 @@ mod tests {
 
     #[test]
     fn test_interning_different_strings() {
-        let s1 = Symbol::intern("Hello, world");
-        let s2 = Symbol::intern("Hello, world");
-        let s3 = Symbol::intern("Hello, world!");
+        let s1: Symbol = "Hello, world".into();
+        let s2: Symbol = "Hello, world".into();
+        let s3: Symbol = "Hello, world!".into();
         assert_eq!(s1, s2);
         assert_ne!(s1, s3);
         assert_ne!(s2, s3);
