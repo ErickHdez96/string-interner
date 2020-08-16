@@ -72,11 +72,14 @@ struct Interner {
 
 impl Interner {
     fn new() -> Self {
-        Self {
+        let mut interner = Self {
             map: HashMap::new(),
             strings: Vec::new(),
             arena: Arena::new(),
-        }
+        };
+        interner.strings.push("");
+        interner.map.insert(interner.strings[0], 0);
+        interner
     }
 
     fn intern<S: AsRef<str>>(&mut self, s: S) -> Symbol {
@@ -119,7 +122,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test() {
+    fn test_interning_near_boundaries() {
         let input1 = " ".repeat(4096);
         let s1 = Symbol::intern(&input1);
         assert_eq!(s1.as_str(), &input1);
@@ -133,6 +136,14 @@ mod tests {
         assert_eq!(s1.as_str(), &input1);
         assert_eq!(s2.as_str(), &input2);
         assert_eq!(s3.as_str(), &input3);
+    }
+
+    #[test]
+    fn test_empty_strings() {
+        let s1 = Symbol::intern("");
+        let s2 = Symbol::intern("");
+        assert_eq!(s1, s2);
+        assert_eq!(s1.as_str(), "");
     }
 
     #[test]
