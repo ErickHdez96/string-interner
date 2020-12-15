@@ -19,7 +19,7 @@ use std::collections::HashMap;
 use std::fmt;
 use std::mem;
 
-#[derive(Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Symbol(u32);
 
 impl Symbol {
